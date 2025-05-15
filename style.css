@@ -1,0 +1,38 @@
+/* style.css */
+body {
+    text-align: center;
+    font-family: Arial;
+    background-color: #f0f0f0;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .cell {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+    background-color: white;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .cell:hover {
+    background-color: #e0e0e0;
+  }
+  
+  #restart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
