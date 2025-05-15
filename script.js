@@ -1,54 +1,60 @@
-// script.js
-
 const cells = document.querySelectorAll(".cell");
 const restartBtn = document.getElementById("restart");
 
+let board = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
-let gameBoard = ["", "", "", "", "", "", "", "", ""];
-let gameOver = false;
+let isGameActive = true;
 
-const winningCombinations = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
-  [0, 4, 8], [2, 4, 6]             // diagonals
+const winningConditions = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
 ];
 
-cells.forEach(cell => {
-  cell.addEventListener("click", () => {
-    const index = cell.dataset.index;
+const handleCellClick = (e) => {
+  const index = e.target.dataset.index;
+  if (board[index] !== "" || !isGameActive) return;
 
-    if (gameBoard[index] === "" && !gameOver) {
-      gameBoard[index] = currentPlayer;
-      cell.textContent = currentPlayer;
-      checkWin();
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-    }
-  });
-});
+  board[index] = currentPlayer;
+  e.target.textContent = currentPlayer;
+  e.target.style.textShadow =
+    currentPlayer === "X"
+      ? "0 0 10px #00fff0, 0 0 20px #00fff0"
+      : "0 0 10px #ff00ff, 0 0 20px #ff00ff";
 
-function checkWin() {
-  for (let combo of winningCombinations) {
-    const [a, b, c] = combo;
-    if (
-      gameBoard[a] &&
-      gameBoard[a] === gameBoard[b] &&
-      gameBoard[a] === gameBoard[c]
-    ) {
-      alert(`${gameBoard[a]} wins!`);
-      gameOver = true;
+  checkWin();
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+};
+
+cells.forEach((cell) => cell.addEventListener("click", handleCellClick));
+
+const checkWin = () => {
+  for (let condition of winningConditions) {
+    const [a, b, c] = condition;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      isGameActive = false;
+      alert(`🎉 Player ${board[a]} wins!`);
       return;
     }
   }
 
-  if (!gameBoard.includes("")) {
-    alert("It's a draw!");
-    gameOver = true;
+  if (!board.includes("")) {
+    isGameActive = false;
+    alert("🤝 It's a draw!");
   }
-}
+};
 
 restartBtn.addEventListener("click", () => {
-  gameBoard = ["", "", "", "", "", "", "", "", ""];
-  gameOver = false;
-  cells.forEach(cell => (cell.textContent = ""));
+  board = ["", "", "", "", "", "", "", "", ""];
+  isGameActive = true;
   currentPlayer = "X";
+  cells.forEach((cell) => {
+    cell.textContent = "";
+    cell.style.textShadow = "";
+  });
 });
